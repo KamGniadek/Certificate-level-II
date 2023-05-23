@@ -1,9 +1,0 @@
-{
-    "Head": {
-        "screenshot": ".images\\head-screenshot.png",
-        "source": "https://robotsparebinindustries.com/#/robot-order",
-        "strategy": "id",
-        "type": "browser",
-        "value": "head"
-    }
-}
