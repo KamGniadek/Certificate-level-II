@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.9.13 on win32)" generated="20230523 09:48:05.956" rpa="true" schemaversion="3">
+<suite id="s1" name="Tasks" source="c:\Users\kamil.gniadek\OneDrive - ONWELO S.A\Backup\Onwelo\Robocorp\Robots\Certificate level II\tasks.robot">
+<test id="s1-t1" name="Order robots from RobotSpareBin Industries Inc" line="15">
+<kw name="Open the robot order website">
+<kw name="Open Available Browser" library="RPA.Browser.Selenium">
+<arg>https://robotsparebinindustries.com/#/robot-order</arg>
+<doc>Attempts to open a browser on the user's device from a set of
+supported browsers. Automatically downloads a corresponding webdriver
+if none is already installed.</doc>
+<msg timestamp="20230523 09:48:14.119" level="INFO">Creating an instance of the Chrome WebDriver.</msg>
+<msg timestamp="20230523 09:48:14.190" level="INFO">Applicable driver not found; attempting to install with Selenium Manager (Beta)</msg>
+<msg timestamp="20230523 09:48:16.660" level="INFO">Created Chrome browser with arguments: --disable-dev-shm-usage --disable-web-security --allow-running-insecure-content --no-sandbox</msg>
+<msg timestamp="20230523 09:48:16.668" level="INFO" html="true">&lt;p&gt;Attempted combinations:&lt;/p&gt;&lt;div class="doc"&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;Browser&lt;/th&gt;&lt;th&gt;Download&lt;/th&gt;&lt;th&gt;Error&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;Chrome&lt;/td&gt;&lt;td&gt;False&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</msg>
+<msg timestamp="20230523 09:48:16.674" level="INFO">Opening url 'https://robotsparebinindustries.com/#/robot-order'</msg>
+<status status="PASS" starttime="20230523 09:48:14.104" endtime="20230523 09:48:18.021"/>
+</kw>
+<status status="PASS" starttime="20230523 09:48:14.095" endtime="20230523 09:48:18.029"/>
+</kw>
+<kw name="Get orders">
+<var>${orders}</var>
+<arg>${OUTPUT_DIR}${/}orders.csv</arg>
+<kw name="Download" library="RPA.HTTP">
+<arg>url=https://robotsparebinindustries.com/orders.csv</arg>
+<arg>target_file=${save_path}</arg>
+<arg>overwrite=True</arg>
+<doc>An alias for the ``HTTP Get`` keyword.</doc>
+<msg timestamp="20230523 09:48:18.077" level="INFO">Creating a new HTTP session</msg>
+<msg timestamp="20230523 09:48:18.079" level="INFO">Creating Session using : alias=rpasession_alias.httpsrobotsparebinindustries.com, url=https://robotsparebinindustries.com, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=True,                     debug=0 </msg>
+<status status="PASS" starttime="20230523 09:48:18.058" endtime="20230523 09:48:18.951"/>
+</kw>
+<kw name="Read table from CSV" library="RPA.Tables">
+<var>${orders}</var>
+<arg>${save_path}</arg>
+<doc>Read a CSV file as a table.</doc>
+<msg timestamp="20230523 09:48:18.979" level="INFO">${orders} = Table(columns=['Order number', 'Head', 'Body', 'Legs', 'Address'], rows=20)</msg>
+<status status="PASS" starttime="20230523 09:48:18.956" endtime="20230523 09:48:18.981"/>
+</kw>
+<return>
+<value>${orders}</value>
+<status status="PASS" starttime="20230523 09:48:18.983" endtime="20230523 09:48:18.986"/>
+</return>
+<msg timestamp="20230523 09:48:18.989" level="INFO">${orders} = Table(columns=['Order number', 'Head', 'Body', 'Legs', 'Address'], rows=20)</msg>
+<status status="PASS" starttime="20230523 09:48:18.043" endtime="20230523 09:48:18.990"/>
+</kw>
+<kw name="Close the annoying modal">
+<kw name="Wait And Click Button" library="RPA.Browser.Selenium">
+<arg>//button[normalize-space()='OK']</arg>
+<doc>Click button identified by ``locator``, once it becomes visible.</doc>
+<msg timestamp="20230523 09:48:19.097" level="INFO">Clicking button '//button[normalize-space()='OK']'.</msg>
+<status status="PASS" starttime="20230523 09:48:18.999" endtime="20230523 09:48:19.281"/>
+</kw>
+<status status="PASS" starttime="20230523 09:48:18.993" endtime="20230523 09:48:19.284"/>
+</kw>
+<for flavor="IN">
+<var>${order}</var>
+<value>@{orders}</value>
+<iter>
+<var name="${order}">{'Order number': '1', 'Head': '1', 'Body': '2', 'Legs': '3', 'Address': 'Address 123'}</var>
+<kw name="Fill the from">
+<arg>${order}</arg>
+<kw name="Select From List By Index" library="RPA.Browser.Selenium">
+<arg>//select[@id='head']</arg>
+<arg>${order}[Head]</arg>
+<doc>Selects options from selection list ``locator`` by ``indexes``.</doc>
+<msg timestamp="20230523 09:48:19.311" level="INFO">Selecting options from selection list '//select[@id='head']' by index 1.</msg>
+<status status="PASS" starttime="20230523 09:48:19.306" endtime="20230523 09:48:19.627"/>
+</kw>
+<kw name="Click Element" library="RPA.Browser.Selenium">
+<arg>//label[@for='id-body-${order}[Body]']</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<msg timestamp="20230523 09:48:19.638" level="INFO">Clicking element '//label[@for='id-body-2']'.</msg>
+<status status="PASS" starttime="20230523 09:48:19.630" endtime="20230523 09:48:19.800"/>
+</kw>
+<kw name="Press Keys" library="RPA.Browser.Selenium">
+<arg>//input[@id='address']</arg>
+<arg>SHIFT+TAB</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<msg timestamp="20230523 09:48:19.810" level="INFO">Sending key(s) ('SHIFT+TAB',) to //input[@id='address'] element.</msg>
+<msg timestamp="20230523 09:48:20.152" level="INFO">Pressing special key SHIFT down.</msg>
+<msg timestamp="20230523 09:48:20.155" level="INFO">Pressing special key TAB down.</msg>
+<msg timestamp="20230523 09:48:20.158" level="INFO">Releasing special key SHIFT.</msg>
+<msg timestamp="20230523 09:48:20.159" level="INFO">Releasing special key TAB.</msg>
+<status status="PASS" starttime="20230523 09:48:19.803" endtime="20230523 09:48:20.201"/>
+</kw>
+<kw name="Press Keys" library="RPA.Browser.Selenium">
+<arg>None</arg>
+<arg>${order}[Legs]</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<msg timestamp="20230523 09:48:20.213" level="INFO">Sending key(s) ('3',) to page.</msg>
+<msg timestamp="20230523 09:48:20.216" level="INFO">Sending key 3</msg>
+<status status="PASS" starttime="20230523 09:48:20.207" endtime="20230523 09:48:20.280"/>
+</kw>
+<kw name="Input Text" library="RPA.Browser.Selenium">
+<arg>//input[@id='address']</arg>
+<arg>${order}[Address]</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<msg timestamp="20230523 09:48:20.295" level="INFO">Typing text 'Address 123' into text field '//input[@id='address']'.</msg>
+<status status="PASS" starttime="20230523 09:48:20.285" endtime="20230523 09:48:20.900"/>
+</kw>
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>//button[@id='preview']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20230523 09:48:20.911" level="INFO">Clicking button '//button[@id='preview']'.</msg>
+<status status="PASS" starttime="20230523 09:48:20.904" endtime="20230523 09:48:21.176"/>
+</kw>
+<try>
+<branch type="TRY">
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>//button[@id='order']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<msg timestamp="20230523 09:48:21.188" level="INFO">Clicking button '//button[@id='order']'.</msg>
+<status status="PASS" starttime="20230523 09:48:21.182" endtime="20230523 09:48:21.423"/>
+</kw>
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>//h3[normalize-space()='Receipt']</arg>
+<arg>timeout=2</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" starttime="20230523 09:48:21.426" endtime="20230523 09:48:21.505"/>
+</kw>
+<status status="PASS" starttime="20230523 09:48:21.179" endtime="20230523 09:48:21.507"/>
+</branch>
+<branch type="EXCEPT">
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>//div[@role='alert']</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" starttime="20230523 09:48:21.512" endtime="20230523 09:48:21.515"/>
+</kw>
+<kw name="Get Text" library="RPA.Browser.Selenium">
+<var>${error_message}</var>
+<arg>//div[@role='alert']</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20230523 09:48:21.517" endtime="20230523 09:48:21.521"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${error_message}</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" starttime="20230523 09:48:21.525" endtime="20230523 09:48:21.527"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>"Retrying..."</arg>
+<doc>Logs the given message with the given level.</doc>
+<status status="NOT RUN" starttime="20230523 09:48:21.529" endtime="20230523 09:48:21.531"/>
+</kw>
+<kw name="Click Button" library="RPA.Browser.Selenium">
+<arg>//button[@id='order']</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20230523 09:48:21.536" endtime="20230523 09:48:21.539"/>
+</kw>
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>//h3[normalize-space()='Receipt']</arg>
+<arg>timeout=2</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="NOT RUN" starttime="20230523 09:48:21.542" endtime="20230523 09:48:21.544"/>
+</kw>
+<status status="NOT RUN" starttime="20230523 09:48:21.510" endtime="20230523 09:48:21.546"/>
+</branch>
+<status status="PASS" starttime="20230523 09:48:21.178" endtime="20230523 09:48:21.548"/>
+</try>
+<status status="PASS" starttime="20230523 09:48:19.298" endtime="20230523 09:48:21.550"/>
+</kw>
+<kw name="Store the receipt as a PDF file">
+<var>${pdf}</var>
+<arg>${order}[Order number]</arg>
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>//div[@id='receipt']</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" starttime="20230523 09:48:21.561" endtime="20230523 09:48:21.629"/>
+</kw>
+<kw name="Get Element Attribute" library="RPA.Browser.Selenium">
+<var>${order_html}</var>
+<arg>//div[@id='receipt']</arg>
+<arg>outerHTML</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<msg timestamp="20230523 09:48:21.692" level="INFO">${order_html} = &lt;div id="receipt" class="alert alert-success" role="alert"&gt;&lt;h3&gt;Receipt&lt;/h3&gt;&lt;div&gt;2023-05-23T07:48:21.395Z&lt;/div&gt;&lt;p class="badge badge-success"&gt;RSB-ROBO-ORDER-C0O45D83ZP&lt;/p&gt;&lt;p&gt;Address 123&lt;/p&gt;&lt;div id="par...</msg>
+<status status="PASS" starttime="20230523 09:48:21.631" endtime="20230523 09:48:21.693"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${pdf_path}</var>
+<arg>${OUTPUT_DIR}${/}order_${order_number}.pdf</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230523 09:48:21.703" level="INFO">${pdf_path} = C:\Users\kamil.gniadek\OneDrive - ONWELO S.A\Backup\Onwelo\Robocorp\Robots\Certificate level II\order_1.pdf</msg>
+<status status="PASS" starttime="20230523 09:48:21.696" endtime="20230523 09:48:21.705"/>
+</kw>
+<kw name="Html To Pdf" library="RPA.PDF">
+<arg>${order_html}</arg>
+<arg>${pdf_path}</arg>
+<doc>Generate a PDF file from HTML content.</doc>
+<msg timestamp="20230523 09:48:21.714" level="INFO">Writing output to file C:\Users\kamil.gniadek\OneDrive - ONWELO S.A\Backup\Onwelo\Robocorp\Robots\Certificate level II\order_1.pdf</msg>
+<msg timestamp="20230523 09:48:22.920" level="INFO">maxp pruned</msg>
+<msg timestamp="20230523 09:48:22.924" level="INFO">cmap pruned</msg>
+<msg timestamp="20230523 09:48:22.942" level="INFO">post pruned</msg>
+<msg timestamp="20230523 09:48:22.948" level="INFO">GDEF dropped</msg>
+<msg timestamp="20230523 09:48:22.952" level="INFO">GPOS dropped</msg>
+<msg timestamp="20230523 09:48:22.955" level="INFO">GSUB dropped</msg>
+<msg timestamp="20230523 09:48:22.974" level="INFO">name pruned</msg>
+<msg timestamp="20230523 09:48:23.128" level="INFO">glyf pruned</msg>
+<msg timestamp="20230523 09:48:23.131" level="INFO">Added gid0 to subset</msg>
+<msg timestamp="20230523 09:48:23.132" level="INFO">Added first four glyphs to subset</msg>
+<msg timestamp="20230523 09:48:23.134" level="INFO">Closing glyph list over 'glyf': 57 glyphs before</msg>
+<msg timestamp="20230523 09:48:23.138" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0021', 'uni002D', 'uni002E', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni003A', 'uni0041', 'uni0042', 'uni0043', 'uni0044', 'uni0045', 'uni0048', 'uni004C', 'uni004F', 'uni0050', 'uni0052', 'uni0053', 'uni0054', 'uni0057', 'uni0059', 'uni005A', 'uni0061', 'uni0062', 'uni0063', 'uni0064', 'uni0065', 'uni0066', 'uni0067', 'uni0068', 'uni0069', 'uni006B', 'uni006C', 'uni006D', 'uni006E', 'uni006F', 'uni0070', 'uni0072', 'uni0073', 'uni0074', 'uni0075', 'uni0076', 'uni0077', 'uni0079', 'uni007B', 'uni007D', 'uni00C4']</msg>
+<msg timestamp="20230523 09:48:23.148" level="INFO">Glyph IDs:   [0, 1, 2, 3, 65, 73, 84, 95, 161, 280, 320, 374, 382, 395, 409, 456, 469, 493, 504, 575, 582, 594, 612, 645, 650, 660, 679, 715, 723, 752, 759, 775, 827, 837, 867, 884, 899, 932, 936, 950, 1294, 1295, 1296, 1298, 1299, 1300, 1302, 1303, 1304, 1305, 1329, 1345, 1346, 1361, 1404, 1407, 1681]</msg>
+<msg timestamp="20230523 09:48:23.151" level="INFO">Closed glyph list over 'glyf': 57 glyphs after</msg>
+<msg timestamp="20230523 09:48:23.155" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0021', 'uni002D', 'uni002E', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni003A', 'uni0041', 'uni0042', 'uni0043', 'uni0044', 'uni0045', 'uni0048', 'uni004C', 'uni004F', 'uni0050', 'uni0052', 'uni0053', 'uni0054', 'uni0057', 'uni0059', 'uni005A', 'uni0061', 'uni0062', 'uni0063', 'uni0064', 'uni0065', 'uni0066', 'uni0067', 'uni0068', 'uni0069', 'uni006B', 'uni006C', 'uni006D', 'uni006E', 'uni006F', 'uni0070', 'uni0072', 'uni0073', 'uni0074', 'uni0075', 'uni0076', 'uni0077', 'uni0079', 'uni007B', 'uni007D', 'uni00C4']</msg>
+<msg timestamp="20230523 09:48:23.161" level="INFO">Glyph IDs:   [0, 1, 2, 3, 65, 73, 84, 95, 161, 280, 320, 374, 382, 395, 409, 456, 469, 493, 504, 575, 582, 594, 612, 645, 650, 660, 679, 715, 723, 752, 759, 775, 827, 837, 867, 884, 899, 932, 936, 950, 1294, 1295, 1296, 1298, 1299, 1300, 1302, 1303, 1304, 1305, 1329, 1345, 1346, 1361, 1404, 1407, 1681]</msg>
+<msg timestamp="20230523 09:48:23.163" level="INFO">Retaining 57 glyphs</msg>
+<msg timestamp="20230523 09:48:23.167" level="INFO">head subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.171" level="INFO">hhea subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.172" level="INFO">maxp subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.175" level="INFO">OS/2 subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.190" level="INFO">hmtx subsetted</msg>
+<msg timestamp="20230523 09:48:23.200" level="INFO">cmap subsetted</msg>
+<msg timestamp="20230523 09:48:23.218" level="INFO">prep subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.221" level="INFO">loca subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.226" level="INFO">post subsetted</msg>
+<msg timestamp="20230523 09:48:23.229" level="INFO">gasp subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.231" level="INFO">STAT subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.233" level="INFO">name subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.240" level="INFO">glyf subsetted</msg>
+<msg timestamp="20230523 09:48:23.247" level="INFO">head pruned</msg>
+<msg timestamp="20230523 09:48:23.262" level="INFO">OS/2 Unicode ranges pruned: [0]</msg>
+<msg timestamp="20230523 09:48:23.272" level="INFO">glyf pruned</msg>
+<msg timestamp="20230523 09:48:23.578" level="INFO">maxp pruned</msg>
+<msg timestamp="20230523 09:48:23.586" level="INFO">cmap pruned</msg>
+<msg timestamp="20230523 09:48:23.595" level="INFO">post pruned</msg>
+<msg timestamp="20230523 09:48:23.615" level="INFO">GDEF dropped</msg>
+<msg timestamp="20230523 09:48:23.621" level="INFO">GPOS dropped</msg>
+<msg timestamp="20230523 09:48:23.623" level="INFO">GSUB dropped</msg>
+<msg timestamp="20230523 09:48:23.641" level="INFO">name pruned</msg>
+<msg timestamp="20230523 09:48:23.715" level="INFO">glyf pruned</msg>
+<msg timestamp="20230523 09:48:23.725" level="INFO">Added gid0 to subset</msg>
+<msg timestamp="20230523 09:48:23.731" level="INFO">Added first four glyphs to subset</msg>
+<msg timestamp="20230523 09:48:23.734" level="INFO">Closing glyph list over 'glyf': 19 glyphs before</msg>
+<msg timestamp="20230523 09:48:23.750" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0041', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00C4']</msg>
+<msg timestamp="20230523 09:48:23.761" level="INFO">Glyph IDs:   [0, 1, 2, 3, 575, 759, 1294, 1295, 1296, 1298, 1299, 1300, 1302, 1303, 1304, 1305, 1345, 1346, 1681]</msg>
+<msg timestamp="20230523 09:48:23.766" level="INFO">Closed glyph list over 'glyf': 19 glyphs after</msg>
+<msg timestamp="20230523 09:48:23.770" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0041', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00C4']</msg>
+<msg timestamp="20230523 09:48:23.777" level="INFO">Glyph IDs:   [0, 1, 2, 3, 575, 759, 1294, 1295, 1296, 1298, 1299, 1300, 1302, 1303, 1304, 1305, 1345, 1346, 1681]</msg>
+<msg timestamp="20230523 09:48:23.781" level="INFO">Retaining 19 glyphs</msg>
+<msg timestamp="20230523 09:48:23.791" level="INFO">head subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.798" level="INFO">hhea subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.800" level="INFO">maxp subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.806" level="INFO">OS/2 subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.821" level="INFO">hmtx subsetted</msg>
+<msg timestamp="20230523 09:48:23.838" level="INFO">cmap subsetted</msg>
+<msg timestamp="20230523 09:48:23.843" level="INFO">prep subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.850" level="INFO">loca subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.854" level="INFO">post subsetted</msg>
+<msg timestamp="20230523 09:48:23.857" level="INFO">gasp subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.864" level="INFO">STAT subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.867" level="INFO">name subsetting not needed</msg>
+<msg timestamp="20230523 09:48:23.879" level="INFO">glyf subsetted</msg>
+<msg timestamp="20230523 09:48:23.886" level="INFO">head pruned</msg>
+<msg timestamp="20230523 09:48:23.893" level="INFO">OS/2 Unicode ranges pruned: [0]</msg>
+<msg timestamp="20230523 09:48:23.905" level="INFO">glyf pruned</msg>
+<msg timestamp="20230523 09:48:24.205" level="INFO">maxp pruned</msg>
+<msg timestamp="20230523 09:48:24.209" level="INFO">cmap pruned</msg>
+<msg timestamp="20230523 09:48:24.213" level="INFO">post pruned</msg>
+<msg timestamp="20230523 09:48:24.214" level="INFO">GDEF dropped</msg>
+<msg timestamp="20230523 09:48:24.216" level="INFO">GPOS dropped</msg>
+<msg timestamp="20230523 09:48:24.218" level="INFO">GSUB dropped</msg>
+<msg timestamp="20230523 09:48:24.222" level="INFO">name pruned</msg>
+<msg timestamp="20230523 09:48:24.268" level="INFO">glyf pruned</msg>
+<msg timestamp="20230523 09:48:24.293" level="INFO">Added gid0 to subset</msg>
+<msg timestamp="20230523 09:48:24.296" level="INFO">Added first four glyphs to subset</msg>
+<msg timestamp="20230523 09:48:24.297" level="INFO">Closing glyph list over 'glyf': 18 glyphs before</msg>
+<msg timestamp="20230523 09:48:24.298" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00A0']</msg>
+<msg timestamp="20230523 09:48:24.301" level="INFO">Glyph IDs:   [0, 1, 2, 3, 544, 727, 1256, 1257, 1258, 1260, 1261, 1262, 1264, 1265, 1266, 1267, 1307, 1308]</msg>
+<msg timestamp="20230523 09:48:24.305" level="INFO">Closed glyph list over 'glyf': 18 glyphs after</msg>
+<msg timestamp="20230523 09:48:24.308" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00A0']</msg>
+<msg timestamp="20230523 09:48:24.313" level="INFO">Glyph IDs:   [0, 1, 2, 3, 544, 727, 1256, 1257, 1258, 1260, 1261, 1262, 1264, 1265, 1266, 1267, 1307, 1308]</msg>
+<msg timestamp="20230523 09:48:24.315" level="INFO">Retaining 18 glyphs</msg>
+<msg timestamp="20230523 09:48:24.321" level="INFO">head subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.324" level="INFO">hhea subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.326" level="INFO">maxp subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.329" level="INFO">OS/2 subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.342" level="INFO">hmtx subsetted</msg>
+<msg timestamp="20230523 09:48:24.349" level="INFO">cmap subsetted</msg>
+<msg timestamp="20230523 09:48:24.350" level="INFO">loca subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.354" level="INFO">post subsetted</msg>
+<msg timestamp="20230523 09:48:24.362" level="INFO">name subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.373" level="INFO">glyf subsetted</msg>
+<msg timestamp="20230523 09:48:24.379" level="INFO">head pruned</msg>
+<msg timestamp="20230523 09:48:24.384" level="INFO">OS/2 Unicode ranges pruned: [0]</msg>
+<msg timestamp="20230523 09:48:24.397" level="INFO">glyf pruned</msg>
+<msg timestamp="20230523 09:48:24.589" level="INFO">maxp pruned</msg>
+<msg timestamp="20230523 09:48:24.594" level="INFO">cmap pruned</msg>
+<msg timestamp="20230523 09:48:24.598" level="INFO">post pruned</msg>
+<msg timestamp="20230523 09:48:24.600" level="INFO">GDEF dropped</msg>
+<msg timestamp="20230523 09:48:24.603" level="INFO">GPOS dropped</msg>
+<msg timestamp="20230523 09:48:24.605" level="INFO">GSUB dropped</msg>
+<msg timestamp="20230523 09:48:24.610" level="INFO">name pruned</msg>
+<msg timestamp="20230523 09:48:24.655" level="INFO">glyf pruned</msg>
+<msg timestamp="20230523 09:48:24.680" level="INFO">Added gid0 to subset</msg>
+<msg timestamp="20230523 09:48:24.682" level="INFO">Added first four glyphs to subset</msg>
+<msg timestamp="20230523 09:48:24.683" level="INFO">Closing glyph list over 'glyf': 18 glyphs before</msg>
+<msg timestamp="20230523 09:48:24.684" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00A0']</msg>
+<msg timestamp="20230523 09:48:24.689" level="INFO">Glyph IDs:   [0, 1, 2, 3, 544, 727, 1256, 1257, 1258, 1260, 1261, 1262, 1264, 1265, 1266, 1267, 1307, 1308]</msg>
+<msg timestamp="20230523 09:48:24.694" level="INFO">Closed glyph list over 'glyf': 18 glyphs after</msg>
+<msg timestamp="20230523 09:48:24.697" level="INFO">Glyph names: ['.notdef', '.null', 'uni0020', 'uni0030', 'uni0031', 'uni0032', 'uni0033', 'uni0034', 'uni0035', 'uni0036', 'uni0037', 'uni0038', 'uni0039', 'uni0062', 'uni006E', 'uni007B', 'uni007D', 'uni00A0']</msg>
+<msg timestamp="20230523 09:48:24.700" level="INFO">Glyph IDs:   [0, 1, 2, 3, 544, 727, 1256, 1257, 1258, 1260, 1261, 1262, 1264, 1265, 1266, 1267, 1307, 1308]</msg>
+<msg timestamp="20230523 09:48:24.702" level="INFO">Retaining 18 glyphs</msg>
+<msg timestamp="20230523 09:48:24.708" level="INFO">head subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.713" level="INFO">hhea subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.715" level="INFO">maxp subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.717" level="INFO">OS/2 subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.732" level="INFO">hmtx subsetted</msg>
+<msg timestamp="20230523 09:48:24.740" level="INFO">cmap subsetted</msg>
+<msg timestamp="20230523 09:48:24.743" level="INFO">loca subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.748" level="INFO">post subsetted</msg>
+<msg timestamp="20230523 09:48:24.750" level="INFO">name subsetting not needed</msg>
+<msg timestamp="20230523 09:48:24.759" level="INFO">glyf subsetted</msg>
+<msg timestamp="20230523 09:48:24.764" level="INFO">head pruned</msg>
+<msg timestamp="20230523 09:48:24.767" level="INFO">OS/2 Unicode ranges pruned: [0]</msg>
+<msg timestamp="20230523 09:48:24.774" level="INFO">glyf pruned</msg>
+<status status="PASS" starttime="20230523 09:48:21.709" endtime="20230523 09:48:25.007"/>
+</kw>
+<return>
+<value>${pdf_path}</value>
+<status status="PASS" starttime="20230523 09:48:25.013" endtime="20230523 09:48:25.016"/>
+</return>
+<msg timestamp="20230523 09:48:25.022" level="INFO">${pdf} = C:\Users\kamil.gniadek\OneDrive - ONWELO S.A\Backup\Onwelo\Robocorp\Robots\Certificate level II\order_1.pdf</msg>
+<status status="PASS" starttime="20230523 09:48:21.552" endtime="20230523 09:48:25.024"/>
+</kw>
+<kw name="Take a screenshot of the robot">
+<var>${screenshot}</var>
+<arg>${order}[Order number]</arg>
+<kw name="Wait Until Element Is Visible" library="RPA.Browser.Selenium">
+<arg>//div[@id='receipt']</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" starttime="20230523 09:48:25.039" endtime="20230523 09:48:25.157"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${screenshot}</var>
+<arg>${OUTPUT_DIR}${/}order_${order_number}_robot_screenshot.jpg</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20230523 09:48:25.171" level="INFO">${screenshot} = C:\Users\kamil.gniadek\OneDrive - ONWELO S.A\Backup\Onwelo\Robocorp\Robots\Certificate level II\order_1_robot_screenshot.jpg</msg>
+<status status="PASS" starttime="20230523 09:48:25.162" endtime="20230523 09:48:25.173"/>
+</kw>
+<kw name="Screenshot" library="RPA.Browser.Selenium">
+<arg>//div[@id='robot-preview-image']</arg>
+<doc>Capture page and/or element screenshot.</doc>
+<msg timestamp="20230523 09:48:25.590" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;img alt="screenshot" class="robot-seleniumlibrary-screenshot" src="data:image/png;base64,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" width="400px"&gt;
